@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  hfu_db:
+    image: postgres
+    container_name: hfu_db
+    restart: always
+    hostname: "hfu_db"
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    command: -p $POSTGRES_PORT
+
+  hfu_server:
+    container_name: hfu_server
+    env_file:
+      - .env
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    restart: "always"
+    depends_on:
+      - "hfu_db"
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
