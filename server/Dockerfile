@@ -11,5 +11,3 @@ COPY . .
 RUN yarn build
 
 EXPOSE 7001
-
-CMD ["yarn", "start"]

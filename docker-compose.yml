@@ -26,3 +26,4 @@ services:
       - "hfu_db"
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
+    command: ["yarn", "start"]
