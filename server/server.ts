@@ -7,8 +7,6 @@ import cors from 'cors'
 import passport from 'passport'
 import UserRouter from './src/routes/users.routes'
 import AuthRouter from './src/routes/auth.routes'
-import CompaniesRouter from './src/routes/companies.routes'
-import TeamsRouter from './src/routes/teams.routes'
 import { initPassport } from './src/passport/passport'
 import { connectToDb } from './src/connectors/db'
 import { swaggerLoader } from './src/loaders/swagger.loader'
@@ -52,9 +50,7 @@ app.use(
 // ------------------- ROUTERS ------------------
 // ---------------------------------------------
 app.use('/api/users', UserRouter)
-app.use('/api/companies', CompaniesRouter)
 app.use('/api/auth', AuthRouter)
-app.use('/api/teams', TeamsRouter)
 app.use('/auth', AuthRouter)
 
 // ------------------------------------------------
