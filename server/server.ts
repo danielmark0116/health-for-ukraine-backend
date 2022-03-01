@@ -5,8 +5,9 @@ import helmet from 'helmet'
 import * as path from 'path'
 import cors from 'cors'
 import passport from 'passport'
-import UserRouter from './src/routes/users.routes'
-import AuthRouter from './src/routes/auth.routes'
+// import UserRouter from './src/routes/users.routes'
+// import AuthRouter from './src/routes/auth.routes'
+import InstitutionsRouter from './src/routes/institutions.routes'
 import { initPassport } from './src/passport/passport'
 import { connectToDb } from './src/connectors/db'
 import { swaggerLoader } from './src/loaders/swagger.loader'
@@ -49,9 +50,10 @@ app.use(
 // ------------------------------------------------
 // ------------------- ROUTERS ------------------
 // ---------------------------------------------
-app.use('/api/users', UserRouter)
-app.use('/api/auth', AuthRouter)
-app.use('/auth', AuthRouter)
+// app.use('/api/users', UserRouter)
+// app.use('/api/auth', AuthRouter)
+// app.use('/auth', AuthRouter)
+app.use('/api/institutions', InstitutionsRouter)
 
 // ------------------------------------------------
 // ------------------- OTHER PATHS ------------------

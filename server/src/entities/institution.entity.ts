@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
-import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator'
+import { IsEmail, IsIn, IsNotEmpty, MaxLength, MinLength } from 'class-validator'
 import { lowercase } from '../transformers/lowercase.transformer'
 
 export type UserRole = 'superadmin' | 'admin' | 'user'
@@ -36,46 +36,49 @@ export class Institution {
   id: string
 
   @Column({ type: 'enum', enum: voivodeships, default: 'silesian' })
+  @IsIn([...voivodeships])
   voivodeship: Voivodehip
 
   @Column({ type: 'enum', enum: professions, default: 'doctor' })
+  @IsIn([...professions])
   profession: Profession
 
   @Column()
-  @MinLength(5)
+  @MinLength(1)
   @MaxLength(200)
   specialty: string
 
   @Column({ type: 'enum', enum: serviceTypes, default: 'on-site' })
+  @IsIn([...serviceTypes])
   serviceType: ServiceType
 
   @Column()
   @IsNotEmpty({ message: 'The addressString is required' })
-  @MinLength(5)
+  @MinLength(1)
   @MaxLength(200)
   addressString: string
 
   @Column()
   @IsNotEmpty({ message: 'The hours field is required' })
-  @MinLength(5)
+  @MinLength(1)
   @MaxLength(20)
   hours: string
 
   @Column()
   @IsNotEmpty({ message: 'The city is required' })
-  @MinLength(3)
+  @MinLength(1)
   @MaxLength(200)
   city: string
 
   @Column()
   @IsNotEmpty({ message: 'The contactData field is required' })
-  @MinLength(3)
+  @MinLength(1)
   @MaxLength(200)
   contactData: string
 
   @Column()
   @IsNotEmpty({ message: 'The languageInfo field is required' })
-  @MinLength(3)
+  @MinLength(1)
   @MaxLength(200)
   languageInfo: string
 
