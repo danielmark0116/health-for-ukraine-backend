@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
-import { IsEmail, IsIn, IsNotEmpty, MaxLength, MinLength } from 'class-validator'
+import { IsBoolean, IsEmail, IsIn, IsNotEmpty, MaxLength, MinLength } from 'class-validator'
 import { lowercase } from '../transformers/lowercase.transformer'
 
 export type UserRole = 'superadmin' | 'admin' | 'user'
@@ -75,6 +75,10 @@ export class Institution {
   @MinLength(1)
   @MaxLength(200)
   contactData: string
+
+  @Column({ type: 'bool', default: false })
+  @IsBoolean()
+  validated: boolean
 
   @Column()
   @IsNotEmpty({ message: 'The languageInfo field is required' })

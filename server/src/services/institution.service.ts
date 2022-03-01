@@ -6,7 +6,10 @@ export const createInstitution = async (
   institutionData: Partial<Institution>
 ): Promise<Institution> => {
   try {
-    const newInstitution = getRepository(Institution).create(institutionData)
+    const newInstitution = getRepository(Institution).create({
+      ...institutionData,
+      validated: false,
+    })
 
     const errors = await validateInstitution(newInstitution)
 
