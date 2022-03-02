@@ -33,7 +33,7 @@ export const createInstitution = async (
 
 export const getAllInstitutions = async (): Promise<Institution[]> => {
   try {
-    const institutions = await getRepository(Institution).find()
+    const institutions = await getRepository(Institution).find({ where: { validated: true } })
 
     return institutions
   } catch (e) {
