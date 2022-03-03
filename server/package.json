@@ -9,7 +9,9 @@
     "start": "yarn migrate && yarn build && cd dist && node server.js",
     "typeorm": "node --require ./node_modules/ts-node/register ./node_modules/typeorm/cli.js --config src/connectors/db.ts",
     "typeorm:runcmd": "ts-node --transpile-only ./node_modules/typeorm/cli.js --config src/connectors/db.ts ",
-    "migrate": "yarn typeorm:runcmd migration:run"
+    "migrate": "yarn typeorm:runcmd migration:run",
+    "migrate:rollback": "yarn typeorm:runcmd migration:revert",
+    "migrate:generate": "yarn typeorm:runcmd migration:generate -- -n "
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
