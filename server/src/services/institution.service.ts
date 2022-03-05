@@ -1,6 +1,10 @@
-import { Institution } from '../entities/institution.entity'
-import { getRepository } from 'typeorm'
+import { Institution, Voivodehip, voivodeships } from '../entities/institution.entity'
+import { getRepository, In } from 'typeorm'
 import { validateInstitution } from '../validators/institution.validator'
+
+interface InstitutionsFilters {
+  voivodeship?: Voivodehip | '*'
+}
 
 export const createInstitution = async (
   institutionData: Partial<Institution>
@@ -31,9 +35,16 @@ export const createInstitution = async (
   }
 }
 
-export const getAllInstitutions = async (): Promise<Institution[]> => {
+export const getAllInstitutions = async ({
+  voivodeship = '*',
+}: InstitutionsFilters): Promise<Institution[]> => {
   try {
-    const institutions = await getRepository(Institution).find({ where: { validated: true } })
+    const institutions = await getRepository(Institution).find({
+      where: {
+        validated: true,
+        voivodeship: In(voivodeship === '*' ? [...voivodeships] : [voivodeship]),
+      },
+    })
 
     return institutions
   } catch (e) {

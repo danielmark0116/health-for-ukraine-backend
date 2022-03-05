@@ -16,7 +16,7 @@ import { lowercase } from '../transformers/lowercase.transformer'
 export type UserRole = 'superadmin' | 'admin' | 'user'
 export type UserAccountProvider = 'internal' | 'google'
 
-const voivodeships = [
+export const voivodeships = [
   'lower-silesian',
   'kuyavian-pomeranian',
   'lublin',

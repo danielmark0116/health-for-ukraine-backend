@@ -1,9 +1,14 @@
 import Express from 'express'
+import type { Voivodehip } from '../entities/institution.entity'
 import * as InstitutionService from '../services/institution.service'
 
-export const getAllInstitutions = async (_req: Express.Request, res: Express.Response) => {
+export const getAllInstitutions = async (req: Express.Request, res: Express.Response) => {
   try {
-    const institutions = await InstitutionService.getAllInstitutions()
+    const query = req.query
+
+    const institutions = await InstitutionService.getAllInstitutions({
+      voivodeship: (query?.voivodeship as Voivodehip) || '*',
+    })
 
     res.json({
       institutions,
