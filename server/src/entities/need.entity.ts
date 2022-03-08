@@ -8,21 +8,25 @@ export class Need {
   id: string
 
   @Column()
+  @IsNotEmpty()
   @MinLength(1)
   @MaxLength(200)
-  needTitle: string
+  title: string
 
   @Column()
+  @IsNotEmpty()
   @MinLength(1)
   @MaxLength(200)
-  needDescription: string
+  description: string
 
   @Column()
+  @IsNotEmpty()
   @MinLength(1)
   @MaxLength(400)
   contact: string
 
   @Column()
+  @IsNotEmpty()
   @MinLength(1)
   @MaxLength(400)
   city: string
@@ -31,6 +35,28 @@ export class Need {
   @IsNotEmpty({ message: 'The email is required' })
   @IsEmail()
   email: string
+
+  @Column({ nullable: true })
+  lat: string
+
+  @Column({ nullable: true })
+  long: string
+
+  @Column({ nullable: true })
+  postedBy: string
+
+  @Column({ nullable: true })
+  updatedBy: string
+
+  @Column({ type: 'integer' })
+  @IsNotEmpty()
+  urgency: number
+
+  @Column()
+  @IsNotEmpty()
+  @MinLength(1)
+  @MaxLength(400)
+  address: string
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date
