@@ -4,7 +4,7 @@ import * as InstitutionService from '../services/institution.service'
 
 export const getAllInstitutions = async (req: Express.Request, res: Express.Response) => {
   try {
-    const query = req.query
+    const query = req?.query || {}
 
     const institutions = await InstitutionService.getAllInstitutions({
       voivodeship: (query?.voivodeship as Voivodehip) || '*',

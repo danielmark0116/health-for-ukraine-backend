@@ -1,6 +1,10 @@
 import { Need } from '../entities/need.entity'
-import { getRepository } from 'typeorm'
+import { getRepository, ILike } from 'typeorm'
 import { validateNeed } from '../validators/need.validator'
+
+interface NeedsFilters {
+  city?: string
+}
 
 export const createNeed = async (needData: Partial<Need>): Promise<Need> => {
   try {
@@ -26,9 +30,17 @@ export const createNeed = async (needData: Partial<Need>): Promise<Need> => {
   }
 }
 
-export const getAllNeeds = async (): Promise<Need[]> => {
+export const getAllNeeds = async ({ city = '*' }: NeedsFilters): Promise<Need[]> => {
   try {
-    const needs = await getRepository(Need).find()
+    const needs = await getRepository(Need).find(
+      city === '*'
+        ? undefined
+        : {
+            where: {
+              city: ILike(city),
+            },
+          }
+    )
 
     return needs
   } catch (e) {

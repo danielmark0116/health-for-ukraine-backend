@@ -1,9 +1,10 @@
 import Express from 'express'
 import * as NeedsService from '../services/need.service'
 
-export const getAllNeeds = async (_req: Express.Request, res: Express.Response) => {
+export const getAllNeeds = async (req: Express.Request, res: Express.Response) => {
   try {
-    const needs = await NeedsService.getAllNeeds()
+    const query = req?.query || { city: '*' }
+    const needs = await NeedsService.getAllNeeds({ city: (query?.city as string) || '*' })
 
     res.json({
       needs,
