@@ -1,6 +1,16 @@
 version: "3"
 
 services:
+  hfu_redis:
+    image: "redis:alpine"
+    container_name: hfu_redis
+    hostname: hfu_redis
+    env_file:
+      - .env
+    command: >
+      --requirepass ${REDIS_PASSWORD}
+    restart: "always"
+
   hfu_db:
     image: postgres
     container_name: hfu_db
