@@ -45,3 +45,25 @@ export const createInstitution = async (req: Express.Request, res: Express.Respo
     })
   }
 }
+
+export const distinctCities = async (req: Express.Request, res: Express.Response) => {
+  try {
+    const query = req?.query || {}
+
+    const cities = await InstitutionService.distinctInstitutionsCities(query)
+
+    res.json({
+      cities,
+      success: true,
+      error: false,
+      msg: 'Fetched all institutions',
+    })
+  } catch (e) {
+    res.status(400).json({
+      msg: 'Get all institutions error',
+      error: true,
+      success: false,
+      errorData: e,
+    })
+  }
+}
