@@ -12,6 +12,8 @@ import NeedsRouter from './src/routes/needs.routes'
 import { initPassport } from './src/passport/passport'
 import { connectToDb } from './src/connectors/db'
 import { swaggerLoader } from './src/loaders/swagger.loader'
+import { connectToRedis } from './src/connectors/redis'
+import responseTime from 'response-time'
 
 const app = Express()
 const port = Number(process.env.SERVER_PORT) || 7004
@@ -21,9 +23,11 @@ const port = Number(process.env.SERVER_PORT) || 7004
 // ---------------------------------------------
 if (process.env.MODE === 'dev') {
   app.use(morgan('tiny') as any)
+  app.use(responseTime() as any)
 }
 
 connectToDb()
+connectToRedis()
 
 swaggerLoader(app)
 

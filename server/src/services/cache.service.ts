@@ -1,0 +1,32 @@
+import Express from 'express'
+import { redisClient } from '../connectors/redis'
+import { REDIS_CACHE_EXPIRY_TIMESPAN_SECONDS } from '../constants/redis.constants'
+
+export const cacheResponseData = async (key: string, data: Record<string, unknown> | unknown[]) => {
+  try {
+    await redisClient.setEx(key, REDIS_CACHE_EXPIRY_TIMESPAN_SECONDS, JSON.stringify(data))
+
+    return true
+  } catch (e) {
+    throw e
+  }
+}
+
+export const responseWithCache = async (
+  req: Express.Request,
+  res: Express.Response,
+  data: unknown
+) => {
+  try {
+    await redisClient.setEx(req.url, REDIS_CACHE_EXPIRY_TIMESPAN_SECONDS, JSON.stringify(data))
+
+    res.status(200).json(data)
+  } catch (e) {
+    res.status(400).json({
+      msg: 'Get all institutions error',
+      error: true,
+      success: false,
+      errorData: e,
+    })
+  }
+}

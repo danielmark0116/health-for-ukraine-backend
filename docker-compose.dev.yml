@@ -1,6 +1,16 @@
 version: "3"
 
 services:
+  hfu_redis:
+    image: "redis:alpine"
+    container_name: hfu_redis
+    hostname: hfu_redis
+    env_file:
+      - .env.development
+    command: >
+      --requirepass ${REDIS_PASSWORD}
+    restart: "always"
+
   hfu_db:
     image: postgres
     container_name: hfu_db
@@ -9,7 +19,7 @@ services:
     volumes:
       - ./db/data:/var/lib/postgresql/data
     env_file:
-      - .env
+      - .env.development
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     command: -p $POSTGRES_PORT
@@ -27,6 +37,7 @@ services:
       - /app/node_modules/
     depends_on:
       - "hfu_db"
+      - "hfu_redis"
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     command: ["yarn", "dev"]
