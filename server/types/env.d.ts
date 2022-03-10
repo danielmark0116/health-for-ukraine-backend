@@ -22,6 +22,9 @@ declare global {
 
       // SENDGRID
       SENDGRID_API_KEY: string
+
+      // HERE API
+      HERE_API_KEY: string
     }
   }
 }

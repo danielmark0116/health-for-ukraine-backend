@@ -9,6 +9,7 @@ import passport from 'passport'
 // import AuthRouter from './src/routes/auth.routes'
 import InstitutionsRouter from './src/routes/institutions.routes'
 import NeedsRouter from './src/routes/needs.routes'
+import SearchRouter from './src/routes/search.routes'
 import { initPassport } from './src/passport/passport'
 import { connectToDb } from './src/connectors/db'
 import { swaggerLoader } from './src/loaders/swagger.loader'
@@ -60,6 +61,7 @@ app.use(
 // app.use('/auth', AuthRouter)
 app.use('/api/institutions', InstitutionsRouter)
 app.use('/api/needs', NeedsRouter)
+app.use('/api/search', SearchRouter)
 
 // ------------------------------------------------
 // ------------------- OTHER PATHS ------------------
