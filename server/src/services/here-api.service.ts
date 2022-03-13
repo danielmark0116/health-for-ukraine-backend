@@ -1,8 +1,10 @@
 import axios from 'axios'
+import { locationLookUpCacheKey } from '../constants/redis.constants'
 import {
   HERE_API_AUTOCOMPLETE_BASE_URL,
   HERE_API_LOOKUP_BASE_URL,
 } from '../constants/here-api.constants'
+import { cacheResponseData, getCachedResponseData } from './cache.service'
 
 type HereResponse<ResponseType> = {
   items: ResponseType[]
@@ -74,11 +76,20 @@ export const autocompleteCities = async (searchText: string): Promise<HereCity[]
 
 export const lookupPlaceById = async (id: string): Promise<HereData> => {
   try {
+    const cacheKey = locationLookUpCacheKey(id)
+    const cachedPlace = await getCachedResponseData<HereData>(cacheKey)
+
+    if (cachedPlace) {
+      return cachedPlace
+    }
+
     const url = composeLookupUrl()
 
     url.searchParams.set('id', id)
 
     const { data } = await axios.get<HereData>(url.toString())
+
+    cacheResponseData(cacheKey, data)
 
     return data
   } catch (e) {
