@@ -75,6 +75,7 @@ export const getAllInstitutions = async ({
         validated: true,
         voivodeship: In(voivodeship === '*' ? [...voivodeships] : [voivodeship]),
       },
+      relations: ['location'],
     })
 
     return institutions

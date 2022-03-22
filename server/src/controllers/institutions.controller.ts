@@ -2,7 +2,6 @@ import Express from 'express'
 import type { Voivodehip } from '../entities/institution.entity'
 import * as InstitutionService from '../services/institution.service'
 import * as HereApiService from '../services/here-api.service'
-import { inspect } from 'util'
 
 export const getAllInstitutions = async (req: Express.Request, res: Express.Response) => {
   try {
