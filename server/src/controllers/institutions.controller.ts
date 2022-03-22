@@ -1,6 +1,7 @@
 import Express from 'express'
 import type { Voivodehip } from '../entities/institution.entity'
 import * as InstitutionService from '../services/institution.service'
+import * as HereApiService from '../services/here-api.service'
 
 export const getAllInstitutions = async (req: Express.Request, res: Express.Response) => {
   try {
@@ -28,7 +29,20 @@ export const getAllInstitutions = async (req: Express.Request, res: Express.Resp
 
 export const createInstitution = async (req: Express.Request, res: Express.Response) => {
   try {
-    const institution = await InstitutionService.createInstitution(req.body)
+    const locationId = req.body?.locationId || ''
+
+    const { id: locationExtId, ...location } = await HereApiService.lookupPlaceById(locationId)
+
+    const position = {
+      lat: location.position.lat,
+      lng: location.position.lng,
+    }
+
+    const institution = await InstitutionService.createInstitutionWithLocation({
+      ...req.body,
+      city: location.address?.city || 'Unknown',
+      location: { ...location, ...position, locationExtId },
+    })
 
     res.json({
       institution,

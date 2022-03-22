@@ -1,8 +1,10 @@
 import axios from 'axios'
+import { locationLookUpCacheKey } from '../constants/redis.constants'
 import {
   HERE_API_AUTOCOMPLETE_BASE_URL,
   HERE_API_LOOKUP_BASE_URL,
 } from '../constants/here-api.constants'
+import { cacheResponseData, getCachedResponseData } from './cache.service'
 
 type HereResponse<ResponseType> = {
   items: ResponseType[]
@@ -24,8 +26,8 @@ type HereCity = {
   title: string
   id: string
   language: string
-  resultType: 'locality'
-  localityType: 'city'
+  resultType: 'locality' | 'administrativeArea'
+  localityType?: string
   address: HereAddress
 }
 
@@ -44,7 +46,9 @@ type HereData = {
 
 const composeCitiesAutocompleteUrl = () => {
   const url = new URL(HERE_API_AUTOCOMPLETE_BASE_URL)
-  url.searchParams.set('types', 'city')
+  // https://developer.here.com/documentation/geocoding-search-api/api-reference-swagger.html
+  // url.searchParams.set('types', 'city') // -> without, smaller villages are easier to find. But duplicates because of different localitytypes
+  url.searchParams.set('types', 'area')
   url.searchParams.set('in', 'countryCode:POL')
   url.searchParams.set('lang', 'pl')
   url.searchParams.set('limit', '5')
@@ -66,7 +70,7 @@ export const autocompleteCities = async (searchText: string): Promise<HereCity[]
       data: { items: cities },
     } = await axios.get<HereResponse<HereCity>>(url.toString())
 
-    return cities
+    return cities.filter((c) => c.resultType !== 'administrativeArea')
   } catch (e) {
     throw e
   }
@@ -74,11 +78,20 @@ export const autocompleteCities = async (searchText: string): Promise<HereCity[]
 
 export const lookupPlaceById = async (id: string): Promise<HereData> => {
   try {
+    const cacheKey = locationLookUpCacheKey(id)
+    const cachedPlace = await getCachedResponseData<HereData>(cacheKey)
+
+    if (cachedPlace) {
+      return cachedPlace
+    }
+
     const url = composeLookupUrl()
 
     url.searchParams.set('id', id)
 
     const { data } = await axios.get<HereData>(url.toString())
+
+    cacheResponseData(cacheKey, data)
 
     return data
   } catch (e) {

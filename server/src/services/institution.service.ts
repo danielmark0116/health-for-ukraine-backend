@@ -1,6 +1,6 @@
 import { Institution, Voivodehip, voivodeships } from '../entities/institution.entity'
-import { getRepository, In } from 'typeorm'
-import { validateInstitution } from '../validators/institution.validator'
+import { Location } from '../entities/location.entity'
+import { getRepository, In, getManager } from 'typeorm'
 
 interface InstitutionsFilters {
   voivodeship?: Voivodehip | '*'
@@ -15,15 +15,46 @@ export const createInstitution = async (
       validated: false,
     })
 
-    const errors = await validateInstitution(newInstitution)
-
-    if (errors.length !== 0) {
-      throw errors
-    }
-
     await getRepository(Institution).save(newInstitution)
 
     const institution = await getRepository(Institution).findOne(newInstitution.id)
+
+    if (!institution) {
+      throw 'Error while creating institution'
+    }
+
+    return institution
+  } catch (e) {
+    throw e
+  }
+}
+
+export const createInstitutionWithLocation = async (
+  institutionData: Partial<Institution>
+): Promise<Institution> => {
+  try {
+    const { location } = institutionData
+
+    const newInstitution = getRepository(Institution).create({
+      ...institutionData,
+      validated: false,
+    })
+
+    const newLocation = getRepository(Location).create({
+      id: undefined,
+      locationExtId: location?.id,
+      ...location,
+    })
+
+    await getManager().transaction(async (transactionalEntityManager) => {
+      const location = await transactionalEntityManager.save(newLocation)
+      newInstitution.location = location
+      await transactionalEntityManager.save(newInstitution)
+    })
+
+    const institution = await getRepository(Institution).findOne(newInstitution.id, {
+      relations: ['location'],
+    })
 
     if (!institution) {
       throw 'Error while creating institution'
@@ -44,6 +75,7 @@ export const getAllInstitutions = async ({
         validated: true,
         voivodeship: In(voivodeship === '*' ? [...voivodeships] : [voivodeship]),
       },
+      relations: ['location'],
     })
 
     return institutions

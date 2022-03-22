@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm'
 import {
   ArrayNotEmpty,
   ArrayUnique,
@@ -12,6 +20,7 @@ import {
   MinLength,
 } from 'class-validator'
 import { lowercase } from '../transformers/lowercase.transformer'
+import { Location } from './location.entity'
 
 export type UserRole = 'superadmin' | 'admin' | 'user'
 export type UserAccountProvider = 'internal' | 'google'
@@ -154,6 +163,10 @@ export class Institution {
   @IsNotEmpty({ message: 'The email is required' })
   @IsEmail()
   email: string
+
+  @OneToOne(() => Location)
+  @JoinColumn()
+  location: Location
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date

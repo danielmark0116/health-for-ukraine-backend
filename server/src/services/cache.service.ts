@@ -12,6 +12,21 @@ export const cacheResponseData = async (key: string, data: Record<string, unknow
   }
 }
 
+export const getCachedResponseData = async <T>(key: string): Promise<T | null> => {
+  try {
+    const cachedData = await redisClient.get(key)
+
+    if (cachedData) {
+      console.log('Returning cached data for: ', key)
+      return JSON.parse(cachedData)
+    }
+
+    return null
+  } catch (e) {
+    throw e
+  }
+}
+
 export const responseWithCache = async (
   req: Express.Request,
   res: Express.Response,
