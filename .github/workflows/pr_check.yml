@@ -28,8 +28,4 @@ jobs:
           node-version: "14"
           cache: "yarn"
           cache-dependency-path: server/yarn.lock
-      - name: Install dependencies and run tests
-      - run: |
-          cd server && yarn
-          pwd
-          yarn test
+      - run: cd server && yarn && yarn test
