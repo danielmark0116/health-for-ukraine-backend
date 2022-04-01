@@ -16,7 +16,7 @@ import { swaggerLoader } from './src/loaders/swagger.loader'
 import { connectToRedis } from './src/connectors/redis'
 import responseTime from 'response-time'
 
-const app = Express()
+export const app = Express()
 const port = Number(process.env.SERVER_PORT) || 7004
 
 // ---------------------------------------------------
@@ -77,7 +77,9 @@ app.get('/', (_: Express.Request, res: Express.Response) => {
 // ------------------------------------------------
 // ------------------- APP INIT ------------------
 // ---------------------------------------------
-app.listen(port, () => {
-  console.log('MODE: ', process.env.MODE)
-  console.log('Server run on port: ', port)
-})
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log('MODE: ', process.env.MODE)
+    console.log('Server run on port: ', port)
+  })
+}
