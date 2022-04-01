@@ -7,6 +7,9 @@ on:
 jobs:
   dependencies:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "server"
     steps:
       - name: Cancel previous runs
         uses: styfle/cancel-workflow-action@0.9.0
@@ -15,12 +18,10 @@ jobs:
       - name: Checkout Github repo
         uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-        working-directory: ./server
         with:
           node-version: "14"
           cache: "yarn"
       - name: Install dependencies
-        working-directory: ./server
         run: |
           yarn install
 
@@ -44,8 +45,7 @@ jobs:
       - name: Checkout Github repo
         uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-        working-directory: ./server
         with:
           node-version: "14"
           cache: "yarn"
-      - run: cd server && yarn test
+      - run: yarn test
