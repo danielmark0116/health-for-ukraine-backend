@@ -5,27 +5,8 @@ on:
     types: [opened, reopened, synchronize]
 
 jobs:
-  dependencies:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.9.0
-        with:
-          access_token: ${{ github.token }}
-      - name: Checkout Github repo
-        uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "14"
-          cache: "yarn"
-          cache-dependency-path: server/yarn.lock
-      - name: Install dependencies
-        run: |
-          cd server && yarn install
-
   yarn-test:
     runs-on: ubuntu-latest
-    needs: dependencies
     services:
       postgres:
         image: postgis/postgis:12-3.2
@@ -47,4 +28,8 @@ jobs:
           node-version: "14"
           cache: "yarn"
           cache-dependency-path: server/yarn.lock
-      - run: cd server && yarn test
+      - name: Install dependencies and run tests
+      - run: |
+          cd server && yarn
+          pwd
+          yarn test
