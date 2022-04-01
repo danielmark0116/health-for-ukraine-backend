@@ -7,6 +7,7 @@
     "build": "tsc && cp package.json dist/",
     "dev": "yarn migrate && yarn build && concurrently \"tsc -w\" \"nodemon dist/server.js\"",
     "start": "yarn migrate && yarn build && cd dist && node server.js",
+    "prettier:check": "prettier --check ./",
     "typeorm": "node --require ./node_modules/ts-node/register ./node_modules/typeorm/cli.js --config src/connectors/db.ts",
     "typeorm:runcmd": "ts-node --transpile-only ./node_modules/typeorm/cli.js --config src/connectors/db.ts ",
     "run:task": "ts-node --transpile-only ",
