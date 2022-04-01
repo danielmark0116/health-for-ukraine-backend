@@ -34,7 +34,7 @@ jobs:
         run: |
           cd server && yarn install && cd ..
 
-  mix-test:
+  yarn-test:
     runs-on: ubuntu-latest
     needs: dependencies
     services:
