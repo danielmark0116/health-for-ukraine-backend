@@ -43,8 +43,10 @@ export const voivodeships = [
   'greater-poland',
   'west-pomeranian',
 ] as const
-const professions = ['doctor', 'nurse', 'midwife', 'physio', 'paramedic'] as const
-const specialities = [
+
+export const professions = ['doctor', 'nurse', 'midwife', 'physio', 'paramedic'] as const
+
+export const specialities = [
   'dentist',
   'internist',
   'cardiologist',
@@ -57,8 +59,10 @@ const specialities = [
   'orthopaedist',
   'psychiatrist',
 ] as const
-const serviceTypes = ['phone', 'visit', 'on-site'] as const
-const languages = ['pl', 'ua', 'en', 'de', 'ru'] as const
+
+export const serviceTypes = ['phone', 'visit', 'on-site'] as const
+
+export const languages = ['pl', 'ua', 'en', 'de', 'ru'] as const
 
 export type ServiceType = typeof serviceTypes[number]
 export type Speciality = typeof specialities[number]
@@ -78,7 +82,7 @@ export class Institution {
   // DEPRECATED! USE PROFESSION
   @Column({ type: 'enum', enum: [...professions, 'dentist'], default: 'doctor', nullable: true })
   @IsOptional()
-  professionOld: Profession
+  professionOld?: Profession
 
   @Column({ type: 'enum', enum: professions, default: 'doctor' })
   @IsIn([...professions])
@@ -86,16 +90,16 @@ export class Institution {
 
   // DEPRECATED!
   @Column({ nullable: true })
-  specialtyOld: string
+  specialtyOld?: string
 
   @Column({ type: 'enum', enum: specialities, nullable: true })
   @IsOptional()
   @IsIn([...specialities])
-  speciality: Speciality
+  speciality?: Speciality
 
   // DEPRECATED!
   @Column({ type: 'enum', enum: serviceTypes, default: 'on-site', nullable: true })
-  serviceTypeOld: ServiceType
+  serviceTypeOld?: ServiceType
 
   @Column({ type: 'enum', enum: serviceTypes, array: true, nullable: false, default: [] })
   @IsArray()
@@ -166,7 +170,7 @@ export class Institution {
 
   @OneToOne(() => Location)
   @JoinColumn()
-  location: Location
+  location?: Location
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date

@@ -6,6 +6,12 @@ interface InstitutionsFilters {
   voivodeship?: Voivodehip | '*'
 }
 
+interface WithinRadiusParameters {
+  currentLat: number
+  currentLng: number
+  radius: number // in metres
+}
+
 export const createInstitution = async (
   institutionData: Partial<Institution>
 ): Promise<Institution> => {
@@ -84,6 +90,34 @@ export const getAllInstitutions = async ({
   }
 }
 
+export const getAllInstitutionsWithinRadius = async ({
+  currentLng,
+  currentLat,
+  radius,
+}: WithinRadiusParameters): Promise<Institution[]> => {
+  try {
+    const institutions = await getRepository(Institution)
+      .createQueryBuilder('institution')
+      .leftJoinAndSelect('institution.location', 'location')
+      .where(
+        'ST_DWithin(ST_MakePoint(location.lng,location.lat)::geography,ST_MakePoint(:currentLng,:currentLat)::geography,:radius)',
+        { currentLat, currentLng, radius }
+      )
+      .andWhere('institution.validated = TRUE')
+      .select([
+        'institution',
+        'location',
+        `ST_DistanceSphere(ST_MakePoint(${currentLng}, ${currentLat} ), ST_MakePoint(location.lng,location.lat)) AS dist`,
+      ])
+      .orderBy('dist')
+      .getMany()
+
+    return institutions
+  } catch (e) {
+    throw e
+  }
+}
+
 export const distinctInstitutionsCities = async ({
   voivodeship = '*',
 }: InstitutionsFilters): Promise<string[]> => {
@@ -98,8 +132,10 @@ export const distinctInstitutionsCities = async ({
         voivodeships: voivodeship === '*' ? voivodeships : [voivodeship],
       })
       .andWhere('institution.validated = TRUE')
-      .select('DISTINCT ON (LOWER(institution.city)) institution.city')
-      .getRawMany()
+      .orderBy('institution.city', 'ASC')
+      .select('institution.city')
+      .distinctOn(['institution.city'])
+      .getMany()
 
     return institutionsCities.map((i) => i.city)
   } catch (e) {

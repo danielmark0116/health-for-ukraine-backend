@@ -8,7 +8,8 @@ export const cacheResponseData = async (key: string, data: Record<string, unknow
 
     return true
   } catch (e) {
-    throw e
+    console.log(e)
+    return false
   }
 }
 
@@ -23,7 +24,8 @@ export const getCachedResponseData = async <T>(key: string): Promise<T | null> =
 
     return null
   } catch (e) {
-    throw e
+    console.log(e)
+    return null
   }
 }
 

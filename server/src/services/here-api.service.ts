@@ -6,11 +6,11 @@ import {
 } from '../constants/here-api.constants'
 import { cacheResponseData, getCachedResponseData } from './cache.service'
 
-type HereResponse<ResponseType> = {
+export type HereResponse<ResponseType> = {
   items: ResponseType[]
 }
 
-type HereAddress = {
+export type HereAddress = {
   label: string
   countryCode: string
   countryName: string
@@ -22,7 +22,7 @@ type HereAddress = {
   houseNumber?: string
 }
 
-type HereCity = {
+export type HereCity = {
   title: string
   id: string
   language: string
@@ -31,7 +31,7 @@ type HereCity = {
   address: HereAddress
 }
 
-type HereData = {
+export type HereData = {
   title: string
   id: string
   language: string
@@ -44,10 +44,11 @@ type HereData = {
   }
 }
 
-const composeCitiesAutocompleteUrl = () => {
+export const composeCitiesAutocompleteUrl = () => {
   const url = new URL(HERE_API_AUTOCOMPLETE_BASE_URL)
   // https://developer.here.com/documentation/geocoding-search-api/api-reference-swagger.html
   // url.searchParams.set('types', 'city') // -> without, smaller villages are easier to find. But duplicates because of different localitytypes
+  url.searchParams.set('apiKey', process.env.HERE_API_KEY)
   url.searchParams.set('types', 'area')
   url.searchParams.set('in', 'countryCode:POL')
   url.searchParams.set('lang', 'pl')
