@@ -28,10 +28,13 @@ jobs:
 
   yarn-test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "server"
     needs: dependencies
     services:
       postgres:
-        image: postgis/postgis
+        image: postgis/postgis:12-3.2
         ports: ["5988:5432"]
         env:
           POSTGRES_USER: postgres
