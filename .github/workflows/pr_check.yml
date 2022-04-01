@@ -21,6 +21,7 @@ jobs:
         with:
           node-version: "14"
           cache: "yarn"
+          cache-dependency-path: server/yarn.lock
       - name: Install dependencies
         run: |
           yarn install
@@ -48,4 +49,5 @@ jobs:
         with:
           node-version: "14"
           cache: "yarn"
+          cache-dependency-path: server/yarn.lock
       - run: yarn test
