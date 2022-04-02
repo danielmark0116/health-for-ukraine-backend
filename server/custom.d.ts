@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { User } from 'src/entities/user.entity'
 
 declare module 'express-serve-static-core' {

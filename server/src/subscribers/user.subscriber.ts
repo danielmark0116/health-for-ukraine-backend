@@ -51,10 +51,10 @@ export class UserSubscriber implements EntitySubscriberInterface<User> {
   }
 
   private optionallyHashThePassword(_user: User): void {
-    // to be used in other case, hashing done in UserService
-    // if (user.password) {
-    if (true) {
-      console.log('This is the moment we are supposed to hash the password')
-    }
+    // To be used in other case, hashing done in UserService
+    // If (user.password) {
+    // if (true) {
+    //   console.log('This is the moment we are supposed to hash the password')
+    // }
   }
 }

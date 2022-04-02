@@ -43,7 +43,7 @@ export const getAllNeeds = async ({ city = '*' }: NeedsFilters): Promise<Need[]>
     )
 
     return needs
-  } catch (e) {
+  } catch (_) {
     throw 'Error while fetching needs'
   }
 }

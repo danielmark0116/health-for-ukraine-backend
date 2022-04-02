@@ -1,8 +1,8 @@
 import Express from 'express'
-import { Institution } from '../entities/institution.entity'
+import { Institution, voivodeships } from '../entities/institution.entity'
 import { validate, ValidationError } from 'class-validator'
 import { getRepository } from 'typeorm'
-import { body } from 'express-validator'
+import { body, query } from 'express-validator'
 import { validateRequest } from './utils.validator'
 
 export const validateInstitution = async (
@@ -40,5 +40,16 @@ export const institutionValidationMiddleware = async (
 export const composedInstitutionValidatorMiddleware = [
   institutionValidationMiddleware,
   body('locationId').not().isEmpty().trim().escape(),
+  validateRequest,
+]
+
+export const institutionsWithinRadiusValidationMiddleware = [
+  query('lat').isFloat().trim().escape(),
+  query('lng').isFloat().trim().escape(),
+  validateRequest,
+]
+
+export const institutionsDistinctCitiesValidationMiddleware = [
+  query('voivodeship').isIn([...voivodeships, '*']),
   validateRequest,
 ]

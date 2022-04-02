@@ -1,0 +1,63 @@
+name: PR Check
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  yarn-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:12-3.2
+        ports: ["5988:5432"]
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: admin
+          POSTGRES_DB: hfu_test
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        with:
+          access_token: ${{ github.token }}
+      - name: Checkout Github repo
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "14"
+          cache: "yarn"
+          cache-dependency-path: server/yarn.lock
+      - run: cd server && yarn && yarn test
+
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        with:
+          access_token: ${{ github.token }}
+      - name: Checkout Github repo
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "14"
+          cache: "yarn"
+          cache-dependency-path: server/yarn.lock
+      - run: cd server && yarn && yarn linter:check
+
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        with:
+          access_token: ${{ github.token }}
+      - name: Checkout Github repo
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "14"
+          cache: "yarn"
+          cache-dependency-path: server/yarn.lock
+      - run: cd server && yarn && yarn prettier:check

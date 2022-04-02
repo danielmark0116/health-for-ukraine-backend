@@ -1,14 +1,14 @@
 {
-  "extends": "eslint-config-twg/tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
-    "types": ["node"],
+    "types": ["node", "jest"],
     "target": "ES2017",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
+    "strict": true,
     "skipLibCheck": true,
     "outDir": "dist",
     "strictPropertyInitialization": false,

@@ -27,6 +27,39 @@ export const getAllInstitutions = async (req: Express.Request, res: Express.Resp
   }
 }
 
+export const getAllInstitutionsWithinRadius = async (
+  req: Express.Request,
+  res: Express.Response
+) => {
+  try {
+    const { lat, lng } = req.query || { lat: null, lng: null }
+
+    if ([lat, lng].every((e) => !e)) {
+      throw 'Invalid query parameters'
+    }
+
+    const institutions = await InstitutionService.getAllInstitutionsWithinRadius({
+      radius: 90_000,
+      currentLng: Number(lng),
+      currentLat: Number(lat),
+    })
+
+    res.json({
+      institutions,
+      success: true,
+      error: false,
+      msg: 'Fetched all institutions',
+    })
+  } catch (e) {
+    res.status(400).json({
+      msg: 'Get all institutions error',
+      error: true,
+      success: false,
+      errorData: e,
+    })
+  }
+}
+
 export const createInstitution = async (req: Express.Request, res: Express.Response) => {
   try {
     const locationId = req.body?.locationId || ''

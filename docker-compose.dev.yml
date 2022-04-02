@@ -12,7 +12,7 @@ services:
     restart: "always"
 
   hfu_db:
-    image: postgres:12-bullseye
+    image: postgis/postgis:12-3.2
     container_name: hfu_db
     restart: always
     hostname: "hfu_db"

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
@@ -25,6 +27,9 @@ declare global {
 
       // HERE API
       HERE_API_KEY: string
+
+      // JEST
+      NODE_ENV: string
     }
   }
 }
