@@ -10,6 +10,7 @@ export const cacheMiddleware = async (
     if (req.method !== 'GET') {
       return next()
     }
+
     const data = await redisClient.get(req.url)
 
     if (!data) {

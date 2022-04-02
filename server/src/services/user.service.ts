@@ -82,7 +82,7 @@ export const hashPassword = async (passwordToHash: string): Promise<string> => {
     const hashedPassword = await bcrypt.hash(passwordToHash, SALT_ROUNDS)
 
     return hashedPassword
-  } catch (e) {
+  } catch (_) {
     throw new Error('Could not hash password')
   }
 }
@@ -95,7 +95,7 @@ export const verifyPassword = async (
     const result = await bcrypt.compare(plainStringPassword, hashedPassword)
 
     return result
-  } catch (e) {
+  } catch (_) {
     throw new Error('Could not verify password')
   }
 }

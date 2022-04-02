@@ -9,7 +9,7 @@ interface InstitutionsFilters {
 interface WithinRadiusParameters {
   currentLat: number
   currentLng: number
-  radius: number // in metres
+  radius: number // In metres
 }
 
 export const createInstitution = async (
@@ -85,7 +85,7 @@ export const getAllInstitutions = async ({
     })
 
     return institutions
-  } catch (e) {
+  } catch (_) {
     throw 'Error while saving institution'
   }
 }
@@ -138,7 +138,7 @@ export const distinctInstitutionsCities = async ({
       .getMany()
 
     return institutionsCities.map((i) => i.city)
-  } catch (e) {
+  } catch (_) {
     throw 'Could not distinct on institution.city'
   }
 }

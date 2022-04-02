@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 declare global {
   namespace NodeJS {
     interface ProcessEnv {

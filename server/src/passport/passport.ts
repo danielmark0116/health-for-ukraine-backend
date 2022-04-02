@@ -12,7 +12,7 @@ opts.secretOrKey = process.env.JWT_SECRET
 
 export const initPassport = () => {
   passport.use(
-    new Strategy(opts, async (jwt_payload: Record<string, any>, done: (...args: any) => {}) => {
+    new Strategy(opts, async (jwt_payload: Record<string, any>, done: (..._args: any) => {}) => {
       try {
         const user = await getRepository(User).findOne(jwt_payload.id)
 
@@ -42,7 +42,7 @@ export const initGoogleOAuth = () => {
         _token: string,
         _tokenSecret: string,
         profile: Record<string, any>,
-        done: (...args: any) => {}
+        done: (..._: any) => {}
       ) => {
         try {
           const user = await getRepository(User).findOne({

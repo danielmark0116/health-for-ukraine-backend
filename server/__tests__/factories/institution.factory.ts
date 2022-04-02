@@ -25,7 +25,7 @@ export const institutionFactory = Factory.define<
 
   const profession = faker.random.arrayElement<Institution['profession']>(professions)
 
-  let speciality: Institution['speciality'] = undefined
+  let speciality: Institution['speciality']
 
   if (profession === 'doctor') {
     speciality = faker.random.arrayElement<Institution['speciality']>(specialities)

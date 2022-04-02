@@ -15,7 +15,7 @@ const addLocationToInstitutions = async () => {
 
     const institutions = await InstitutionsService.getAllInstitutions({ voivodeship: '*' })
 
-    for (let institution of institutions) {
+    for (const institution of institutions) {
       if (!institution.location) {
         const [possibleCity] = await HereApiService.autocompleteCities(institution.city)
 

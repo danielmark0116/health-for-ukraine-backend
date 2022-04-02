@@ -27,6 +27,7 @@ afterEach(() => {
     if (entity.tableName === 'user') {
       return
     }
+
     const repository = connection.getRepository(entity.name)
     await repository.query(`TRUNCATE TABLE ${entity.tableName} CASCADE;`)
   })

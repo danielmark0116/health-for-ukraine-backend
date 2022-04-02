@@ -47,9 +47,7 @@ initPassport()
 app.use(
   '/.well-known',
   Express.static(path.join(__dirname, '../public'), {
-    setHeaders: (res) => {
-      res.type('application/json')
-    },
+    setHeaders: (res) => res.type('application/json'),
   })
 )
 

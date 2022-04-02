@@ -15,7 +15,7 @@ describe('GET /api/institutions/withinRadius', () => {
     await institutionFactory.associations({ location: katowice }).create({ city: 'Katowice' })
     await institutionFactory.associations({ location: knurow }).create({ city: 'Knurow' })
 
-    for (let location of otherLocations) {
+    for (const location of otherLocations) {
       await institutionFactory.associations({ location }).create({ city: location.title })
     }
   })
@@ -68,7 +68,7 @@ describe('GET /api/institutions/cities', () => {
   it('should return a list of unique, distinct cities for a provided voivodeship', async () => {
     const response = await agent.get('/api/institutions/cities?voivodeship=silesian')
 
-    const cities = response.body.cities
+    const { cities } = response.body
 
     expect(response.status).toBe(200)
     expect(response.body).toEqual(expect.objectContaining({ success: true, error: false }))
