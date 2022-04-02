@@ -1,5 +1,4 @@
 {
-  "extends": "eslint-config-twg/tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
     "types": ["node", "jest"],
@@ -9,6 +8,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
+    "strict": true,
     "skipLibCheck": true,
     "outDir": "dist",
     "strictPropertyInitialization": false,

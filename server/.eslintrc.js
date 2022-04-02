@@ -1,8 +1,9 @@
 module.exports = {
   env: {
+    extends: 'eslint-config-twg/tsconfig.json',
     browser: true,
     es2021: true,
-    jest: true
+    jest: true,
   },
   extends: ['xo', 'prettier'],
   parser: '@typescript-eslint/parser',
