@@ -19,6 +19,8 @@ import responseTime from 'response-time'
 const app = Express()
 const port = Number(process.env.SERVER_PORT) || 7004
 
+console.log("sdiofjdsoifj")
+
 // ---------------------------------------------------
 // ---------------------- LOADERS -----------
 // ---------------------------------------------
